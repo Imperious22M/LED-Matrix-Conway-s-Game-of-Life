@@ -26,17 +26,21 @@
 // NOTE: If you are using the ribbon cable to connect, pins are mirrored relative
 // to their order on the PCB in the Y axis. Please see Adafruits documentation
 // for further details.
-uint8_t rgbPins[]  = {8, 7, 9, 11, 10, 12}; //LED matrix: R1, G1, B1, R2, G2, B2
-uint8_t addrPins[] = {18, 19, 20, 21}; // LED matrix: A,B,C,D
-uint8_t clockPin   = 13; // LED matrix: CLK
-uint8_t latchPin   = 1; // LED matrix: LAT
-uint8_t oePin      = 0; // LED matrix: OE
+uint8_t rgbPins[]  = {0, 1, 2, 3, 4, 5}; //LED matrix: R1, G1, B1, R2, G2, B2
+uint8_t addrPins[] = {6, 7, 8, 9}; // LED matrix: A,B,C,D
+uint8_t clockPin   = 11; // LED matrix: CLK
+uint8_t latchPin   = 12; // LED matrix: LAT
+uint8_t oePin      = 13; // LED matrix: OE
+uint8_t powerButton = 14; // GPIO of the power button
+uint8_t modeButton = 15; // GPIO of the mode button
+// GPIO 26 is unconnected and used as the seed for randomInit()
+
 // Simulation variables
 uint8_t rgbSimColor[] = {125,76,0}; // Custom color for the simulation
 const uint32_t refreshRate = 1000; // refresh rate of the simulation in milliseconds
 uint32_t oldTime = millis(); // timer used for refreshing the matrix
 uint32_t cellsUpdated = 0; // Used as a reset measure if the pattern becomes "static"
-const uint32_t updateThreshold = 25; // Sets the minimum amount of cells we need to update to keep the simulation going.
+const uint32_t updateThreshold = 35; // Sets the minimum amount of cells we need to update to keep the simulation going.
 
 // For details on the constructor arguments please see:
 // https://learn.adafruit.com/adafruit-matrixportal-m4/protomatter-arduino-library
@@ -46,13 +50,18 @@ Adafruit_Protomatter matrix(
   oePin, double_buffered);
 
 // Initialize the simulation
-ConwaysGame simulation(&matrix,matrix.color565(rgbSimColor[0],rgbSimColor[1],rgbSimColor[2]));
+ConwaysGame simulation(
+  &matrix,
+  matrix.color565(rgbSimColor[0],rgbSimColor[1],rgbSimColor[2]));
 
 // Initial setup
 void setup(void) {
 
   Serial.begin(9600);
   pinMode(26,INPUT); // Set unconnected GPIO26 (ADC0) as input for random seed if needed
+  pinMode(powerButton,INPUT);
+  pinMode(modeButton,INPUT);
+
 
   // Initialize matrix...
   ProtomatterStatus status = matrix.begin();
