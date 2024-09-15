@@ -1,8 +1,8 @@
-// This is a smalkl program for simulating Conway's Game of Life
-// on a HUB75 32x64 LED matrix on a Rapsberry Pi Pico
-// Requres the maxgerhardt Arduino core in order for this
+// This is a small program for simulating Conway's Game of Life
+// on a HUB75 32x64 LED matrix on a Raspberry Pi Pico
+// Requires the maxgerhardt Arduino core for this
 // project to work in PlatformIO. 
-// We will be using Adafruits Protomatter library and 
+// We will be using Adafruit's Protomatter library and 
 // their GFX library for this project.
 #include <Arduino.h>
 #include <Adafruit_Protomatter.h>
@@ -24,7 +24,7 @@
 // of the LCD matrix.
 // See: https://learn.adafruit.com/32x16-32x32-rgb-led-matrix/connecting-with-jumper-wires
 // NOTE: If you are using the ribbon cable to connect, pins are mirrored relative
-// to their order on the PCB in the Y axis. Please see Adafruits documentation
+// to their order on the PCB in the Y axis. Please see Adafruit documentation
 // for further details.
 uint8_t rgbPins[]  = {0, 1, 2, 3, 4, 5}; //LED matrix: R1, G1, B1, R2, G2, B2
 uint8_t addrPins[] = {6, 7, 8, 9}; // LED matrix: A,B,C,D
@@ -81,7 +81,7 @@ void setup(void) {
   }
 
   // Any function that has color must use matrix.color(uint8_t r,g,b) call to obtain a
-  // 16 bit integer with the desired color, which is passed as the color argument.
+  //16-bit integer with the desired color, which is passed as the color argument.
   matrix.setTextSize(1);
   matrix.println("Conway's \nGame \nof \nLife."); // Default text color is white
 
@@ -101,7 +101,7 @@ void setup(void) {
 void loop(void) {
   // Run the simulation every 100 ms and show it in the matrix
   // This code can be vastly improved, but for now it serves its purpose.
-  if(cellsUpdated<=updateThreshold){ // If there isn't enought activity in the simulation, make a new random pattern
+  if(cellsUpdated<=updateThreshold){ // If there isn't enough activity in the simulation, make a new random pattern
     simulation.initSeed(true); // do  random pattern every startup
   }
   cellsUpdated = simulation.calcNextGen();
